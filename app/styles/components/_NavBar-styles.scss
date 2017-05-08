@@ -1,0 +1,16 @@
+
+.top-bar,.top-bar ul{
+	background-color:$nav-background-color;
+}
+.top-bar{
+    .menu-text{
+        color:$font-color;
+        a{
+            display:inline;
+            padding-left:0.2rem;
+            font-size:1rem;
+        }
+    }
+    
+}
+
