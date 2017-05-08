@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import ReactDOM from 'react-dom';
+import Clock from 'Clock';
 
 
 export default class CountDown extends Component{
@@ -7,6 +8,7 @@ export default class CountDown extends Component{
         return(
              <div>
                 <h1 className = "text-center">CountDown Component</h1>
+                <Clock/>
             </div>    
         );
     }

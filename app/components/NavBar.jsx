@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 export default class NavBar extends Component{
      render(){
@@ -10,8 +10,8 @@ export default class NavBar extends Component{
                  <div className = "top-bar-left">
                      <ul className ="menu">
                          <li className = "menu-text">React Timer App</li>
-                         <li><Link to='/'>Timer</Link></li>
-                         <li><Link to="/CountDown">Count Down</Link></li>
+                         <li><NavLink to='/' activeClassName = "active-link">Timer</NavLink></li>
+                         <li><NavLink to="/CountDown" activeClassName ="active-link">Count Down</NavLink></li>
                      </ul>
                  </div>
                  <div className = "top-bar-right">
