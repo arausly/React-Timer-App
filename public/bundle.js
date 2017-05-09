@@ -7546,13 +7546,15 @@ var Clock = function (_Component) {
    _createClass(Clock, [{
       key: 'render',
       value: function render() {
+         var totalSeconds = this.props.totalSeconds;
+
          return _react2.default.createElement(
             'div',
-            null,
+            { className: 'clock' },
             _react2.default.createElement(
-               'p',
-               null,
-               'Clock Component'
+               'span',
+               { className: 'clock-text' },
+               this.formatSeconds(totalSeconds)
             )
          );
       }
@@ -7562,6 +7564,15 @@ var Clock = function (_Component) {
 }(_react.Component);
 
 exports.default = Clock;
+
+
+Clock.defaultProps = {
+   totalSeconds: 615
+};
+
+Clock.propTypes = {
+   totalSeconds: _propTypes2.default.number.isRequired
+};
 
 /***/ }),
 /* 63 */
@@ -26785,7 +26796,7 @@ exports = module.exports = __webpack_require__(63)(undefined);
 
 
 // module
-exports.push([module.i, ".top-bar, .top-bar ul {\n  background-color: #333333; }\n\n.top-bar .menu-text {\n  color: aliceblue; }\n  .top-bar .menu-text a {\n    display: inline;\n    padding-left: 0.2rem;\n    font-size: 1rem; }\n\n.top-bar .active-link {\n  font-weight: bold; }\n", ""]);
+exports.push([module.i, ".top-bar, .top-bar ul {\n  background-color: #333333; }\n\n.top-bar .menu-text {\n  color: aliceblue; }\n  .top-bar .menu-text a {\n    display: inline;\n    padding-left: 0.2rem;\n    font-size: 1rem; }\n\n.top-bar .active-link {\n  font-weight: bold; }\n\n.clock {\n  background-color: #b5d0e2;\n  align-items: center;\n  border: 1px solid #2099e8;\n  border-radius: 50%;\n  display: flex;\n  justify-content: center;\n  height: 14rem;\n  width: 14rem;\n  margin: 4rem auto; }\n  .clock .clock-text {\n    color: white;\n    font-weight: 300;\n    text-align: center;\n    font-size: 2.25rem; }\n", ""]);
 
 // exports
 

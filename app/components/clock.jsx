@@ -11,10 +11,22 @@ export default class Clock extends Component{
        return (`${minutes}:${seconds}`); 
    }
     render(){
+       let {totalSeconds} = this.props;
         return(
-           <div>
-                <p>Clock Component</p> 
+           <div className ="clock">
+                <span className ="clock-text">
+                   {this.formatSeconds(totalSeconds)}
+                </span>     
            </div>    
         );
     }
 } 
+
+
+Clock.defaultProps ={
+  totalSeconds : 615,  
+};
+
+Clock.propTypes = {
+totalSeconds:PropTypes.number.isRequired
+};
