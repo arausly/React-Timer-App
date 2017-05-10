@@ -11860,16 +11860,42 @@ var CountDown = function (_Component) {
         var _this = _possibleConstructorReturn(this, (CountDown.__proto__ || Object.getPrototypeOf(CountDown)).call(this, props));
 
         _this.handleUpdate = function (time) {
-            _this.setState({ count: time });
+            _this.setState({
+                count: time,
+                countDownStatus: 'started'
+            });
+        };
+
+        _this.startTime = function () {
+            var timer = setInterval(function () {
+                var newCount = _this.state.count - 1;
+                _this.setState({
+                    count: newCount >= 0 ? newCount : 0
+                });
+            }, 1000);
+            return timer;
         };
 
         _this.state = {
-            count: 89
+            count: 89,
+            countDownStatus: 'stopped'
         };
         return _this;
     }
 
     _createClass(CountDown, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            if (this.state.countDownStatus !== prevState.countDownStatus) {
+
+                switch (this.state.countDownStatus) {
+                    case 'started':
+                        this.startTime();
+                        break;
+                }
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             var count = this.state.count;
@@ -12021,28 +12047,16 @@ var CountDownForm = function (_Component) {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
-                'form',
-                { onSubmit: this.handleInput },
+                'div',
+                null,
                 _react2.default.createElement(
-                    'div',
-                    { className: 'row' },
+                    'form',
+                    { onSubmit: this.handleInput },
+                    _react2.default.createElement('input', { type: 'text', ref: 'seconds', placeholder: 'Enter time in seconds' }),
                     _react2.default.createElement(
-                        'div',
-                        { className: 'medium-6 small-centered' },
-                        _react2.default.createElement(
-                            'label',
-                            null,
-                            _react2.default.createElement('input', { type: 'text', ref: 'seconds', placeholder: 'Enter time in seconds' })
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'medium-6 small-centered' },
-                        _react2.default.createElement(
-                            'button',
-                            { className: 'button expanded' },
-                            'Start'
-                        )
+                        'button',
+                        { className: 'button expanded' },
+                        'Start'
                     )
                 )
             );
@@ -12113,8 +12127,12 @@ var Main = function (_Component) {
                 _react2.default.createElement(_NavBar2.default, null),
                 _react2.default.createElement(
                     'div',
-                    null,
-                    this.props.children
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'columns medium-6 large-6 small-centered' },
+                        this.props.children
+                    )
                 )
             );
         }

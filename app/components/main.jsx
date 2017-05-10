@@ -8,9 +8,11 @@ export default class Main extends Component{
         return(
                <div>
                   <NavBar/>
-                <div>
-                  {this.props.children}
-                </div>    
+                <div className ="row">
+                    <div className = "columns medium-6 large-6 small-centered">    
+                       {this.props.children}
+                    </div>
+                </div>      
               </div>
         );
     }

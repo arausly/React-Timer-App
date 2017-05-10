@@ -13,19 +13,13 @@ export default class CountDownForm extends Component{
           }
     }
     render(){
-        return(        
+        return(   
+          <div>    
              <form onSubmit ={this.handleInput}>
-                <div className ="row">
-                 <div className = "medium-6 small-centered">
-                     <label>
-                          <input type ="text" ref ="seconds" placeholder = "Enter time in seconds" />
-                     </label>     
-                 </div>     
-                 <div className ="medium-6 small-centered">
-                    <button className ="button expanded">Start</button>
-                 </div>    
-                </div>    
-             </form>                
+             <input type ="text" ref ="seconds" placeholder = "Enter time in seconds" />
+             <button className ="button expanded">Start</button>  
+             </form>  
+          </div>        
         );
     }
 }
