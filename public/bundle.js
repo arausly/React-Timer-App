@@ -11843,6 +11843,10 @@ var _CountDownForm = __webpack_require__(106);
 
 var _CountDownForm2 = _interopRequireDefault(_CountDownForm);
 
+var _Controls = __webpack_require__(242);
+
+var _Controls2 = _interopRequireDefault(_Controls);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11862,23 +11866,26 @@ var CountDown = function (_Component) {
         _this.handleUpdate = function (time) {
             _this.setState({
                 count: time,
-                countDownStatus: 'started'
+                countDownStatus: 'Started'
             });
         };
 
         _this.startTime = function () {
-            var timer = setInterval(function () {
+            _this.timer = setInterval(function () {
                 var newCount = _this.state.count - 1;
                 _this.setState({
                     count: newCount >= 0 ? newCount : 0
                 });
             }, 1000);
-            return timer;
+        };
+
+        _this.handleStatusChanged = function (newStatus) {
+            _this.setState({ countDownStatus: newStatus });
         };
 
         _this.state = {
-            count: 89,
-            countDownStatus: 'stopped'
+            count: 0,
+            countDownStatus: 'Stopped'
         };
         return _this;
     }
@@ -11889,8 +11896,14 @@ var CountDown = function (_Component) {
             if (this.state.countDownStatus !== prevState.countDownStatus) {
 
                 switch (this.state.countDownStatus) {
-                    case 'started':
+                    case 'Started':
                         this.startTime();
+                        break;
+                    case 'Stopped':
+                        this.setState({ count: 0 });
+                    case 'Paused':
+                        clearInterval(this.timer);
+                        this.timer = undefined;
                         break;
                 }
             }
@@ -11898,7 +11911,19 @@ var CountDown = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var count = this.state.count;
+            var _this2 = this;
+
+            var _state = this.state,
+                count = _state.count,
+                countDownStatus = _state.countDownStatus;
+
+            var renderToArea = function renderToArea() {
+                if (countDownStatus !== 'Stopped') {
+                    return _react2.default.createElement(_Controls2.default, { countDownStatus: countDownStatus, onStatusChanged: _this2.handleStatusChanged });
+                } else {
+                    return _react2.default.createElement(_CountDownForm2.default, { onSetCount: _this2.handleUpdate });
+                }
+            };
 
             return _react2.default.createElement(
                 'div',
@@ -11909,11 +11934,7 @@ var CountDown = function (_Component) {
                     'CountDown Component'
                 ),
                 _react2.default.createElement(_Clock2.default, { totalSeconds: count }),
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    _react2.default.createElement(_CountDownForm2.default, { onSetCount: this.handleUpdate })
-                )
+                renderToArea()
             );
         }
     }]);
@@ -26932,7 +26953,7 @@ exports = module.exports = __webpack_require__(63)(undefined);
 
 
 // module
-exports.push([module.i, ".top-bar, .top-bar ul {\n  background-color: #333333; }\n\n.top-bar .menu-text {\n  color: aliceblue; }\n  .top-bar .menu-text a {\n    display: inline;\n    padding-left: 0.2rem;\n    font-size: 1rem; }\n\n.top-bar .active-link {\n  font-weight: bold; }\n\n.clock {\n  background-color: #b5d0e2;\n  align-items: center;\n  border: 2px solid #2099e8;\n  border-radius: 50%;\n  display: flex;\n  justify-content: center;\n  height: 14rem;\n  width: 14rem;\n  margin: 4rem auto; }\n  .clock .clock-text {\n    color: white;\n    font-weight: 300;\n    text-align: center;\n    font-size: 2.25rem; }\n", ""]);
+exports.push([module.i, ".top-bar, .top-bar ul {\n  background-color: #333333; }\n\n.top-bar .menu-text {\n  color: aliceblue; }\n  .top-bar .menu-text a {\n    display: inline;\n    padding-left: 0.2rem;\n    font-size: 1rem; }\n\n.top-bar .active-link {\n  font-weight: bold; }\n\n.clock {\n  background-color: #b5d0e2;\n  align-items: center;\n  border: 2px solid #2099e8;\n  border-radius: 50%;\n  display: flex;\n  justify-content: center;\n  height: 14rem;\n  width: 14rem;\n  margin: 4rem auto; }\n  .clock .clock-text {\n    color: white;\n    font-weight: 300;\n    text-align: center;\n    font-size: 2.25rem; }\n\n.controls {\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .controls button:first-child {\n    margin-right: 2rem; }\n  .controls button {\n    padding: 0.75rem 3rem; }\n", ""]);
 
 // exports
 
@@ -27025,6 +27046,106 @@ __webpack_require__(103);
 __webpack_require__(102);
 module.exports = __webpack_require__(101);
 
+
+/***/ }),
+/* 242 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(21);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _propTypes = __webpack_require__(8);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Control = function (_Component) {
+    _inherits(Control, _Component);
+
+    function Control() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, Control);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Control.__proto__ || Object.getPrototypeOf(Control)).call.apply(_ref, [this].concat(args))), _this), _this.statusChanged = function (newStatus) {
+            return function () {
+                return _this.props.onStatusChanged(newStatus);
+            };
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(Control, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var countDownStatus = this.props.countDownStatus;
+
+            var renderStartStopButton = function renderStartStopButton() {
+                if (countDownStatus === 'Started') {
+                    return _react2.default.createElement(
+                        'button',
+                        { className: 'button secondary ', onClick: _this2.statusChanged('Paused') },
+                        'Pause'
+                    );
+                } else if (countDownStatus === "Paused") {
+                    return _react2.default.createElement(
+                        'button',
+                        { className: 'button primary', onClick: _this2.statusChanged('Started') },
+                        'Start'
+                    );
+                }
+            };
+            return _react2.default.createElement(
+                'div',
+                { className: 'controls' },
+                renderStartStopButton(),
+                _react2.default.createElement(
+                    'button',
+                    { className: 'button alert', onClick: this.statusChanged('Stopped') },
+                    'Clear'
+                )
+            );
+        }
+    }]);
+
+    return Control;
+}(_react.Component);
+
+exports.default = Control;
+
+
+Control.propTypes = {
+    countDownStatus: _propTypes2.default.string.isRequired,
+    onStatusChanged: _propTypes2.default.func.isRequired
+};
 
 /***/ })
 /******/ ]);

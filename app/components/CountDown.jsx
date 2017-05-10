@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import ReactDOM from 'react-dom';
 import Clock from 'Clock';
 import CountDownForm from 'CountDownForm';
+import Controls from 'Controls';
 
 
 
@@ -9,18 +10,24 @@ export default class CountDown extends Component{
     constructor(props){
         super(props);
          this.state = {
-            count : 89,
-            countDownStatus:'stopped'
+            count :0,
+            countDownStatus:'Stopped'
          };
     }
     componentDidUpdate(prevProps,prevState){
         if(this.state.countDownStatus !== prevState.countDownStatus){
         
             switch(this.state.countDownStatus){
-                    case 'started':
-                     this.startTime();
+                    case 'Started':
+                      this.startTime();
                     break;
-            }
+                    case 'Stopped':
+                     this.setState({count:0});
+                    case 'Paused':
+                     clearInterval(this.timer);
+                      this.timer = undefined;
+                    break;
+             }
             
         }
     }
@@ -28,29 +35,41 @@ export default class CountDown extends Component{
       this.setState
         ({
           count:time,
-          countDownStatus:'started'
+          countDownStatus:'Started'
         });
         
     }
     
     startTime = () =>{
-        let timer = setInterval(()=>{
+        this.timer = setInterval(()=>{
           let newCount = this.state.count - 1;
           this.setState({
              count:newCount >=0 ? newCount : 0
           });
-        },1000)
-        return timer;    
+        },1000)    
+    }
+    handleStatusChanged =(newStatus) =>{
+            this.setState({countDownStatus:newStatus});
     }
     render(){
-        let {count} = this.state;
+        let {count,countDownStatus} = this.state;
+        const renderToArea = () =>{
+            if(countDownStatus !== 'Stopped'){
+                return (
+                          <Controls countDownStatus={countDownStatus} onStatusChanged={this.handleStatusChanged}/>
+                );
+            }else {
+                return (
+                         <CountDownForm onSetCount={this.handleUpdate} />
+                );
+            }
+        }
+        
         return(
              <div>
                 <h1 className = "text-center">CountDown Component</h1>
-                <Clock totalSeconds ={count}/>
-                <div>
-                    <CountDownForm onSetCount={this.handleUpdate}/>
-                </div>    
+                <Clock totalSeconds ={count}/>   
+                {renderToArea()}
             </div>    
         );
     }

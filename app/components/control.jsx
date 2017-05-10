@@ -3,25 +3,31 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
 export default class Control extends Component{
+    statusChanged = (newStatus) =>{
+        return ()=>(
+          this.props.onStatusChanged(newStatus)
+        );
+    }
+    
     render(){
-        renderStartStopButton =()=> {
-            if(countDownStatus === 'started'){
+     let {countDownStatus} = this.props;
+       const renderStartStopButton =()=> {
+            if(countDownStatus === 'Started'){
                 return(
-                   <button className = "buttton secondary hollow">Pause</button>
+                   <button className="button secondary " onClick={this.statusChanged('Paused')}>Pause</button>
                 );
                 
-            }else if(countDownStatus === "stopped"){
+            }else if(countDownStatus ==="Paused"){
                 return(
-                    <button className = "buttton primary">Start</button>
+                 <button className="button primary" onClick={this.statusChanged('Started')}>Start</button>
                 );
             }
         }
-        let {countDownStatus} = this.props;
-        return(
-            <div>
-                {this.renderStartStopButton}
-                <button className = "button alert hollow">
-                Clear
+        return( 
+            <div className="controls">
+                {renderStartStopButton()}
+                <button className="button alert" onClick={this.statusChanged('Stopped')}>
+                  Clear
                 </button>  
             </div>    
         );
@@ -30,4 +36,5 @@ export default class Control extends Component{
 
 Control.propTypes = {
     countDownStatus:PropTypes.string.isRequired,
+    onStatusChanged:PropTypes.func.isRequired,
 }

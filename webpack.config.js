@@ -31,6 +31,7 @@ module.exports = {
             App:'app/styles/app.scss',
             Clock:'app/components/clock.jsx',
             CountDownForm:'app/components/countDownForm.jsx',
+            Controls:'app/components/control.jsx',
         },
         extensions:['.js','.jsx']
     },
