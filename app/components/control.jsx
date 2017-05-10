@@ -9,6 +9,9 @@ export default class Control extends Component{
         );
     }
     
+  componentWillReceiveProps(newProps){
+       console.log('count down status has been changed',newProps.countDownStatus);
+  }
     render(){
      let {countDownStatus} = this.props;
        const renderStartStopButton =()=> {
@@ -16,7 +19,7 @@ export default class Control extends Component{
                 return(
                    <button className="button secondary " onClick={this.statusChanged('Paused')}>Pause</button>
                 );
-                
+                   
             }else if(countDownStatus ==="Paused"){
                 return(
                  <button className="button primary" onClick={this.statusChanged('Started')}>Start</button>

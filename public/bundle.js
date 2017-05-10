@@ -11876,6 +11876,9 @@ var CountDown = function (_Component) {
                 _this.setState({
                     count: newCount >= 0 ? newCount : 0
                 });
+                if (newCount == 0) {
+                    _this.setState({ countDownStatus: 'Stopped' });
+                }
             }, 1000);
         };
 
@@ -11907,6 +11910,12 @@ var CountDown = function (_Component) {
                         break;
                 }
             }
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            clearInterval(this.timer);
+            this.timer = undefined;
         }
     }, {
         key: 'render',
@@ -27102,6 +27111,11 @@ var Control = function (_Component) {
     }
 
     _createClass(Control, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(newProps) {
+            console.log('count down status has been changed', newProps.countDownStatus);
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;

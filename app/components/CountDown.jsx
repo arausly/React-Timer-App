@@ -46,10 +46,17 @@ export default class CountDown extends Component{
           this.setState({
              count:newCount >=0 ? newCount : 0
           });
+         if(newCount == 0){
+            this.setState({countDownStatus:'Stopped'});
+         }
         },1000)    
     }
     handleStatusChanged =(newStatus) =>{
             this.setState({countDownStatus:newStatus});
+    }
+    componentWillUnmount(){
+        clearInterval(this.timer);
+        this.timer = undefined;
     }
     render(){
         let {count,countDownStatus} = this.state;
