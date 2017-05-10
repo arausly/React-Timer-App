@@ -74,7 +74,7 @@ export default class CountDown extends Component{
         
         return(
              <div>
-                <h1 className = "text-center">CountDown Component</h1>
+                <h1 className = "page-title" >Count Down App</h1>
                 <Clock totalSeconds ={count}/>   
                 {renderToArea()}
             </div>    
