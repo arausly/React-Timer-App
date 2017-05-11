@@ -71,7 +71,6 @@ export default class CountDown extends Component{
                 );
             }
         }
-        
         return(
              <div>
                 <h1 className = "page-title" >Count Down App</h1>
