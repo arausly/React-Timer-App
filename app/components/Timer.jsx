@@ -18,13 +18,13 @@ export default class Timer extends Component{
                        this.startTime();
         
                      break;
+                     case 'Stopped':
+                        this.setState({count:0});
                      case 'Paused':
                        clearInterval(this.counter);
                         this.counter = undefined;
                        break;
-                     case 'Stopped':
-                        this.setState({count:0});
-                       break;
+                    
             }
         }
     }
