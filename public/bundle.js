@@ -11845,7 +11845,7 @@ __webpack_require__(99)(__webpack_require__(238))
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -11879,98 +11879,141 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var CountDown = function (_Component) {
-    _inherits(CountDown, _Component);
+  _inherits(CountDown, _Component);
 
-    function CountDown(props) {
-        _classCallCheck(this, CountDown);
+  function CountDown(props) {
+    _classCallCheck(this, CountDown);
 
-        var _this = _possibleConstructorReturn(this, (CountDown.__proto__ || Object.getPrototypeOf(CountDown)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (CountDown.__proto__ || Object.getPrototypeOf(CountDown)).call(this, props));
 
-        _this.handleUpdate = function (time) {
-            _this.setState({
-                count: time,
-                countDownStatus: 'Started'
-            });
-        };
+    _this.handleUpdate = function (time) {
+      _this.setState({
+        count: time,
+        countDownStatus: 'Started'
+      });
+    };
 
-        _this.startTime = function () {
-            _this.timer = setInterval(function () {
-                var newCount = _this.state.count - 1;
-                _this.setState({
-                    count: newCount >= 0 ? newCount : 0
-                });
-                if (newCount == 0) {
-                    _this.setState({ countDownStatus: 'Stopped' });
-                }
-            }, 1000);
-        };
-
-        _this.handleStatusChanged = function (newStatus) {
-            _this.setState({ countDownStatus: newStatus });
-        };
-
-        _this.state = {
-            count: 0,
-            countDownStatus: 'Stopped'
-        };
-        return _this;
-    }
-
-    _createClass(CountDown, [{
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps, prevState) {
-            if (this.state.countDownStatus !== prevState.countDownStatus) {
-
-                switch (this.state.countDownStatus) {
-                    case 'Started':
-                        this.startTime();
-                        break;
-                    case 'Stopped':
-                        this.setState({ count: 0 });
-                    case 'Paused':
-                        clearInterval(this.timer);
-                        this.timer = undefined;
-                        break;
-                }
-            }
+    _this.startTime = function () {
+      _this.timer = setInterval(function () {
+        var newCount = _this.state.count - 1;
+        _this.setState({
+          count: newCount >= 0 ? newCount : 0
+        });
+        if (newCount == 0) {
+          _this.setState({ countDownStatus: 'Stopped' });
         }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
+      }, 1000);
+    };
+
+    _this.handleStatusChanged = function (newStatus) {
+      _this.setState({ countDownStatus: newStatus });
+    };
+
+    _this.Notification = _this.Notification.bind(_this);
+    _this.state = {
+      count: 0,
+      countDownStatus: 'Stopped'
+    };
+    return _this;
+  }
+
+  _createClass(CountDown, [{
+    key: 'Notification',
+    value: function (_Notification) {
+      function Notification() {
+        return _Notification.apply(this, arguments);
+      }
+
+      Notification.toString = function () {
+        return _Notification.toString();
+      };
+
+      return Notification;
+    }(function () {
+      if (this.state.countDownStatus === "Stopped") {
+        window.Notification.requestPermission();
+        if (!window.Notification) {
+          alert('your browser does not support notifications');
+        } else {
+          if (Notification.requestPermission() === "granted") {
+            notify();
+          } else if (Notification.requestPermission !== "denied") {
+            Notification.requestPermission(function (permission) {
+              if (permission === "granted") {
+                notify();
+              }
+            });
+          }
+        }
+      }
+
+      var notify = function notify() {
+        var notification = new Notification("News", {
+          body: "Time's up"
+        });
+
+        notification.onclick = function () {
+          notification.close();
+        };
+        setTimeout(notification.close(), 6000);
+      };
+    })
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (this.state.countDownStatus !== prevState.countDownStatus) {
+
+        switch (this.state.countDownStatus) {
+          case 'Started':
+            this.startTime();
+            break;
+          case 'Stopped':
+            this.setState({ count: 0 });
+            this.Notification();
+          case 'Paused':
             clearInterval(this.timer);
             this.timer = undefined;
+            break;
         }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
+      }
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      clearInterval(this.timer);
+      this.timer = undefined;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
 
-            var _state = this.state,
-                count = _state.count,
-                countDownStatus = _state.countDownStatus;
+      var _state = this.state,
+          count = _state.count,
+          countDownStatus = _state.countDownStatus;
 
-            var renderToArea = function renderToArea() {
-                if (countDownStatus !== 'Stopped') {
-                    return _react2.default.createElement(_Controls2.default, { countDownStatus: countDownStatus, onStatusChanged: _this2.handleStatusChanged });
-                } else {
-                    return _react2.default.createElement(_CountDownForm2.default, { onSetCount: _this2.handleUpdate });
-                }
-            };
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'h1',
-                    { className: 'page-title' },
-                    'Count Down App'
-                ),
-                _react2.default.createElement(_Clock2.default, { totalSeconds: count }),
-                renderToArea()
-            );
+      var renderToArea = function renderToArea() {
+        if (countDownStatus !== 'Stopped') {
+          return _react2.default.createElement(_Controls2.default, { countDownStatus: countDownStatus, onStatusChanged: _this2.handleStatusChanged });
+        } else {
+          return _react2.default.createElement(_CountDownForm2.default, { onSetCount: _this2.handleUpdate });
         }
-    }]);
+      };
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'h1',
+          { className: 'page-title' },
+          'Count Down App'
+        ),
+        _react2.default.createElement(_Clock2.default, { totalSeconds: count }),
+        renderToArea()
+      );
+    }
+  }]);
 
-    return CountDown;
+  return CountDown;
 }(_react.Component);
 
 exports.default = CountDown;
@@ -12045,6 +12088,7 @@ var Timer = function (_Component) {
                 switch (this.state.timeStatus) {
                     case 'Started':
                         this.startTime();
+                        this.setState({ tracker: 1 });
 
                         break;
                     case 'Stopped':

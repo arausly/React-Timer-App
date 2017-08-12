@@ -8,14 +8,16 @@ export default class Timer extends Component{
         super(props);
         this.state ={   
             count : 0,
-           timeStatus:'Stopped'
+           timeStatus:'Stopped',
         }
     }
-    componentDidUpdate(prevProps,PrevState){
+
+	    componentDidUpdate(prevProps,PrevState){
         if(this.state.timeStatus !== PrevState.timeStatus){
             switch(this.state.timeStatus){
                     case'Started':
                        this.startTime();
+					   this.setState({tracker:1})
         
                      break;
                      case 'Stopped':

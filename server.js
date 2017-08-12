@@ -4,11 +4,8 @@ var express = require('express');
 
 let myApp  = express();
 
-// expose the folder
 
 myApp.use(express.static('public'));
-
-// specify  port 
 
 let port = process.env.PORT  || 9000;
 
